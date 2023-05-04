@@ -1,0 +1,21 @@
+########
+# Water
+########
+
+water_OW_q = 0.0
+water_OW_sig = 0.3150
+water_OW_eps = 0.85
+
+water_HW_q = 0.55
+water_HW_sig = 0.0
+water_HW_eps = 0.0
+
+water_IW_q = -1.10
+water_IW_sig = 0.0
+water_IW_eps = 0.0
+
+water_settles_doh =  0.097122
+water_settles_dhh = 0.15896128732999398
+
+water_dummies = 0.13436825495242136
+

@@ -1,0 +1,46 @@
+integrator              = md
+dt                      = 0.001
+nsteps                  = 50000
+nstlog                  = 1000
+nstxout                 = 0
+
+nstxout-compressed      = 10000
+
+nstvout                 = 0
+nstfout                 = 0
+nstcalcenergy           = 0
+nstenergy               = 0
+
+cutoff-scheme           = Verlet
+nstlist                 = 20
+rlist                   = 1.2
+coulombtype             = pme
+rcoulomb                = 1.2
+vdwtype                 = Cut-off
+vdw-modifier            = Force-switch
+rvdw_switch             = 1.0
+rvdw                    = 1.2
+
+tcoupl                  = v-rescale
+tc_grps                 = water !water
+tau_t                   = 1.0  1.0
+ref_t                   = 300  300
+
+pcoupl              =  Berendsen ;Parrinello-Rahman
+Pcoupltype          =  semiisotropic
+tau_p               =  1.0
+compressibility     =  4.5e-5  4.5e-5
+ref_p               =  1.0     1.0
+
+constraints             = none;h-bonds
+constraint_algorithm    = LINCS
+
+nstcomm                 = 100
+comm_mode               = linear
+comm_grps               = water !water
+
+
+;gen-vel = yes
+;gen-temp = 320
+;gen-seed = -1
+
