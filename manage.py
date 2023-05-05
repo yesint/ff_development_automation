@@ -6,6 +6,7 @@ from pathlib import Path
 from glob import glob
 import os
 import shutil
+import binascii
 
 parser = argparse.ArgumentParser(prog="ff-manage")
 parser.add_argument('-a','--add',
@@ -24,9 +25,16 @@ parser.add_argument('--check-all',
                     help='Check the status of all parameters')
 
 args = parser.parse_args()
-print(args)
+#print(args)
 
-root_dir = '/home/semen/work/Projects/Prague/ForceField_development/FF'
+
+def CRC32_from_file(filename):
+    buf = open(filename,'rb').read()
+    buf = (binascii.crc32(buf) & 0xFFFFFFFF)
+    return ("%08X" % buf).lower()
+
+
+root_dir = os.path.dirname(os.path.realpath(__file__))
 cluster_root_dir = '/home2/yesylevskyy/work/FF'
 ssh_host = 'yesylevskyy@aurum.uochb.cas.cz'
 
@@ -53,7 +61,7 @@ if args.add!=None:
             | awk -F '=' '{print "#define",$1,$2}' > %s/params.itp
             """ % (par_dir,par_dir) ,shell=True)
             
-            hash = check_output(f"crc32 {par_dir}/params.itp",shell=True,encoding='UTF-8')[:-1]
+            hash = CRC32_from_file(f"{par_dir}/params.itp")
             
             print(f'Generated params.itp, hash={hash}')
             
@@ -83,9 +91,10 @@ if args.add!=None:
             for test_name in open(f'{db_dir}/tests.lst').readlines():
                 test_name = test_name.strip('\n\r\t ')
                 # See if we have a template for this test
-                if os.path.isdir(f'{root_dir}/test_templates/{test_name}'):
+                if os.path.isdir(f'{root_dir}/tests/{test_name}'):
                     # Copy content of the test template folder
-                    call(f'cp -rL {root_dir}/test_templates/{test_name} {db_dir}/tests', shell=True)
+                    call(f'mkdir -p {db_dir}/tests/{test_name}', shell=True)
+                    call(f'cp -rL {root_dir}/tests/{test_name}/template/* {db_dir}/tests/{test_name}', shell=True)
                     # copy params.itp to a toppar of the test folder
                     call(f'cp {db_dir}/params.itp {db_dir}/tests/{test_name}/toppar/', shell=True)
                     # Set hash in job file
@@ -98,6 +107,7 @@ if args.add!=None:
             # Transfer db entry to a cluster
             print(f'Sending {hash} to cluster...')
             call(f'rsync -aPr -e "ssh" {db_dir} {ssh_host}:{cluster_root_dir}/db >/dev/null', shell=True)
+            print(f'Done adding {hash}\n')
 
 
 if args.check:
@@ -112,13 +122,24 @@ if args.check:
             print(f'{hash} exists locally')
             
             # Check if db entry exists on cluster
-            ret = call(f'ssh {ssh_host} [ -d {cluster_root_dir}/db/{hash} ]', shell=True)
+            remote_dir = f'{cluster_root_dir}/db/{hash}'
+            ret = call(f'ssh {ssh_host} [ -d {remote_dir} ]', shell=True)
             if ret!=0:
                 print(f'{hash} DOES NOT exists on cluster')
             else: # 0 return code
                 print(f'{hash} exists on cluster')
-                # Check the execution status
-        
+                # Check the execution status for all tests
+                # Get sttaus of all tests
+                cmd = f'ssh {ssh_host} "cd {remote_dir}/tests; for d in *; do [ -f \$d/STATUS ] && echo -n \$d: && cat \$d/STATUS; done"'
+                #print(cmd)
+                try:
+                    res = check_output(cmd,shell=True,encoding='UTF8').strip()
+                    print(f'Test status:\n{res}')
+                except:
+                    print('No tests results')
+                
+
+                
             
             
             

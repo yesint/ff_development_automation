@@ -61,7 +61,7 @@ function resubmit {
        # Report failure
        echo "md failed" > STATUS
     fi
-    if [ ! -f confout.gro ] && [ -z ${failed+x} ]; then
+    if [ ! -f after_md.gro ] && [ -z ${failed+x} ]; then
        echo Resubmitting at $(date)
        echo Resubmitting at $(date) with a=${a_loaded} b=${b_loaded} >> submit.log
        sbatch --export=ALL,a_loaded=${a_loaded},b_loaded=${b_loaded},cpi_arg="-cpi" job
