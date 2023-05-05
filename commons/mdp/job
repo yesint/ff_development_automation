@@ -4,10 +4,11 @@
 #SBATCH --time=04:00:00
 #SBATCH --mem=10G
 #---------------------------------
-# SBATCH --partition=b32_128_gpu
-# SBATCH --gres=gpu:2
+#SBATCH --partition=b32_128_gpu
+#SBATCH --gres=gpu:2
 
-#SBATCH --partition=b64_any,a36_any
+# SBATCH --partition=b64_any,a36_any
+
 #SBATCH --nodes=1
 
 # SBATCH --partition=a36_any
