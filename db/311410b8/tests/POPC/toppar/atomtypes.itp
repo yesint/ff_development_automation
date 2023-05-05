@@ -1,0 +1,11 @@
+[ atomtypes ]
+;name  at.num    mass      charge   ptype   sigma     epsilon
+
+; Water
+ IW     0        0        water_IW_q        D    water_IW_sig     water_IW_eps
+ OW     8  15.9994        water_OW_q        A    water_OW_sig     water_OW_eps
+ HW     1   1.0079        water_HW_q        A    water_HW_sig     water_HW_eps
+
+; IONS
+K  19  39.0983     K_q   A    K_sig     K_eps
+CL 17  35.4530     Cl_q  A    Cl_sig    Cl_eps

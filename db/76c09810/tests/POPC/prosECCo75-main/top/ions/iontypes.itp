@@ -1,0 +1,13 @@
+;; prosECCo75 v20210916
+
+[ atomtypes ]
+;name  at.num    mass      charge   ptype   sigma     epsilon
+   Ca_s  20      40.07800    1.500     A     0.253800  0.50725000 ; DOI: 10.1021/jp5005693 ; Jungwirth2014 ; scaled ; ECCR (Note: Based on Ca_g)  (preferred parameters)
+  Ca_2s 20      40.07800    1.500     A     0.266558  0.50725000 ; DOI: 10.1063/1.5006779 ; Martinek2018 ; scaled ; ECCR+~5% sigma ; (Note: Based on Ca_g);
+  Cl_s  17      35.45300   -0.750     A     0.378240  0.41840000 ; DOI: 10.1021/jp5005693 ; Jungwirth2014a ; scaled
+  Cl_2s 17      35.45300   -0.750     A     0.410000  0.49280000 ; DOI: 10.1080/00268976.2013.875231 ; Jungwirth2014b ; scaled (Note: Based on Cl_o)
+  K_s   19      39.09830    0.750     A     0.315400  0.41868000 ; DOI: 10.1021/jp3008267 ; Mason2012
+  Li_s   3       6.94100    0.750     A     0.180000  0.07647000 ; DOI: 10.1080/00268976.2013.875231 ; Pluharova2014; scaled
+  Mg_ss 12      24.305      1.500     A     0.13600   3.661000   ; DOI:10.1021/acs.jpcb.7b09612; Duboué-Dijon2017; MG_scaled charge "small" version (recommended version)
+  Mg_sb 12      24.305      1.500     A     0.15500   3.661000   ; DOI:10.1021/acs.jpcb.7b09612; Duboué-Dijon2017; MG_scaled charge "big" version
+  Na_s  11      22.98977    0.750     A     0.211500  0.54428400 ; DOI: 10.1021/acs.jpcb.5b05221 ; Jungwirth2015 ; scaled

@@ -1,0 +1,17 @@
+[ moleculetype ]
+; molname   nrexcl
+K    1
+
+[ atoms ]
+; id       at type  resnr  residue_name    at_name  cg_nr
+  1        K        1      K               K           1    K_q    39.0983
+
+[ moleculetype ]
+; molname   nrexcl
+CL  1
+
+[ atoms ]
+; id       at type  resnr  residue_name    at_name  cg_nr
+  1        CL       1      CL              CL        1      Cl_q   35.4530
+
+

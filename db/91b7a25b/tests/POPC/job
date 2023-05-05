@@ -1,0 +1,115 @@
+#!/bin/bash
+#SBATCH --qos=normal
+#SBATCH --exclusive
+#SBATCH --time=04:00:00
+#SBATCH --mem=10G
+#---------------------------------
+# SBATCH --partition=b32_128_gpu
+# SBATCH --gres=gpu:2
+
+#SBATCH --partition=b64_any,a36_any
+#SBATCH --nodes=1
+
+# SBATCH --partition=a36_any
+# SBATCH --nodes=4
+#---------------------------------
+# SBATCH --qos=special_parallel
+#---------------------------------
+
+#SBATCH -J FF91b7a25b
+
+#SBATCH --output out.txt
+#SBATCH --error  err.txt
+
+#------------------------------------
+host=$(hostname)
+partition=${host:0:1}
+echo Partition: $partition
+#----------------------------------------
+echo Running on $(hostname)
+echo Available nodes: $SLURM_NODELIST
+echo Slurm_submit_dir: $SLURM_SUBMIT_DIR
+echo Start time: $(date)
+#----------------------------------------
+
+# modules
+
+if [ "$partition" = "a" ]; then
+  if [ -z ${a_loaded+x} ]; then
+    source /uochb/soft/a/spack/20221129-git/share/spack/setup-env.sh
+    spack load cuda@11.8.0%gcc@11.3.0 openblas@0.3.21%gcc@11.3.0 fftw+mpi
+    a_loaded=1
+  fi
+  omp_flag="-ntomp 36"
+else
+  if [ -z ${b_loaded+x} ]; then
+    source  /uochb/soft/b/spack/20221211-git/share/spack/setup-env.sh
+    spack load cuda blas lapack fftw+mpi #/tpax7cy
+    b_loaded=1
+  fi
+  omp_flag="-ntomp 32"
+fi
+
+#------------------------------------
+function resubmit {
+    echo EXIT TRAPPED
+    if    ls step* 1>/dev/null 2>&1 \
+       #|| grep " error" err.txt 1>/dev/null 2>&1 \
+       || grep " error" md.log 1>/dev/null 2>&1
+    then
+       failed=1
+       echo Error occured at $(date) >> submit.log
+       # Report failure
+       echo "md failed" > STATUS
+    fi
+    if [ ! -f confout.gro ] && [ -z ${failed+x} ]; then
+       echo Resubmitting at $(date)
+       echo Resubmitting at $(date) with a=${a_loaded} b=${b_loaded} >> submit.log
+       sbatch --export=ALL,a_loaded=${a_loaded},b_loaded=${b_loaded},cpi_arg="-cpi" job
+    fi
+}
+
+trap resubmit EXIT
+#----------------------------------------
+
+# pteros
+source /home2/yesylevskyy/programs/pteros/lib/pterosrc
+
+# plumed
+#export PATH=$PATH:/home2/yesylevskyy/programs/plumed/bin
+#export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home2/yesylevskyy/programs/plumed/lib
+#export PLUMED_KERNEL=/home2/yesylevskyy/programs/plumed/lib/libplumedKernel.so
+
+# gromacs
+source /home2/yesylevskyy/programs/gromacs-2023-mpi/bin/GMXRC
+export SLURM_MPI_TYPE=pmix_v3
+
+gmx=gmx_mpi
+
+############
+# MD
+############
+
+if [ -z ${cpi_arg+x} ]
+then
+  echo Pre-processing started at $(date) >> submit.log
+  $gmx grompp -f em.mdp -p topol.top -c init.gro -n index.ndx -maxwarn 10
+  $gmx mdrun -c after_em.gro
+  $gmx grompp -f md_relax.mdp -p topol.top -c after_em.gro -n index.ndx -maxwarn 10
+  $gmx mdrun -c after_relax.gro
+  $gmx grompp -f md.mdp -p topol.top -c after_relax.gro -n index.ndx -maxwarn 10
+fi
+echo Production run started at $(date) >> submit.log
+$gmx mdrun -c after_md.gro ${cpi_arg}
+
+echo  MD finished at $(date) >> submit.log
+# Report success of MD
+echo "md finished" > STATUS
+
+############
+# Analysis
+############
+
+pteros_analysis.py -f topol.tpr traj_comp.xtc -b 50000 -task analysis.py
+
+echo "analysis finished" > STATUS

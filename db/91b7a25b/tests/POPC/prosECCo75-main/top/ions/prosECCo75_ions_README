@@ -1,0 +1,12 @@
+The following ions are currently supported:
+
+- Li_s [ DOI: 10.1080/00268976.2013.875231 ]
+- Na_s [ DOI: 10.1021/acs.jpcb.5b05221 ]
+- K_s [ DOI: 10.1021/jp3008267 ]
+- Ca_s [ DOI: 10.1021/jp5005693; reproduces neutron scattering data ] (Recommended)
+- Ca_2s [ DOI: 10.1063/1.5006779 ; reproduces Ab initio molecular dynamics data ]
+- Mg_ss [ DOI:10.1021/acs.jpcb.7b09612; "small" version ]
+- Mg_sb [ DOI:10.1021/acs.jpcb.7b09612; "big" version ]
+- Cl_s [ DOI: 10.1021/jp5005693; Correct density ]
+- Cl_2s [ DOI: 10.1080/00268976.2013.875231; Correct solvation structure ]
+

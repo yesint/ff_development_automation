@@ -1,0 +1,134 @@
+;; prosECCo75 v20210916
+
+
+Changes in prosECCo75 respect chamm36/charmm36m (C36)
+
+
+###### ARG ######
+Type  Name Q-C36 Q-prosECCo75
+NH1   N    -0.47 -0.47
+H     HN    0.31  0.31
+CT1   CA    0.07  0.07
+HB1   HA    0.09  0.09
+CT2   CB   -0.18 -0.18
+HA2   HB1   0.09  0.09
+HA2   HB2   0.09  0.09
+CT2   CG   -0.18 -0.18
+HA2   HG1   0.09  0.09
+HA2   HG2   0.09  0.09
+CT2   CD    0.20  0.15
+HA2   HD1   0.09  0.0675
+HA2   HD2   0.09  0.0675
+NC2   NE   -0.70 -0.525
+HC    HE    0.44  0.33
+C     CZ    0.64  0.48
+NC2   NH1  -0.80 -0.60
+HC    HH11  0.46  0.345
+HC    HH12  0.46  0.345
+NC2   NH2  -0.80 -0.60
+HC    HH21  0.46  0.345
+HC    HH22  0.46  0.345
+C     C     0.51  0.51
+O     O    -0.51 -0.51
+TOTAL       1.00  0.75
+
+###### ASP ######
+#Type  Name Q-C36 Q-prosECCo75
+NH1    N    -0.47 -0.47
+H      HN    0.31  0.31
+CT1    CA    0.07  0.07
+HB1    HA    0.09  0.09
+CT2A   CB   -0.28 -0.21
+HA2    HB1   0.09  0.0675
+HA2    HB2   0.09  0.0675
+CC     CG    0.62  0.465
+OC     OD1  -0.76 -0.57
+OC     OD2  -0.76 -0.57
+C      C     0.51  0.51
+O      O    -0.51 -0.51
+TOTAL       -1.00 -0.75
+
+###### GLU #######
+Type  Name Q-C36 Q-prosECCo75
+NH1   N    -0.47 -0.47
+H     HN    0.31  0.31
+CT1   CA    0.07  0.07
+HB1   HA    0.09  0.09
+CT2A  CB   -0.18 -0.18
+HA2   HB1   0.09  0.09
+HA2   HB2   0.09  0.09
+CT2   CG   -0.28 -0.21
+HA2   HG1   0.09  0.0675
+HA2   HG2   0.09  0.0675
+CC    CD    0.62  0.465
+OC    OE1  -0.76 -0.57
+OC    OE2  -0.76 -0.57
+C     C     0.51  0.51
+O     O    -0.51 -0.51
+TOTAL      -1.00 -0.75
+
+###### HSP ######
+Type  Name Q-C36 Q-prosECCo75
+N     NH1  -0.47 -0.47
+HN    H     0.31  0.31
+CA    CT1   0.07  0.07
+HA    HB1   0.09  0.09
+CB    CT2A -0.05 -0.05
+HB1   HA2   0.09  0.09
+HB2   HA2   0.09  0.09
+CD2   CPH1  0.19  0.19
+HD2   HR1   0.13  0.13
+CG    CPH1  0.19  0.19
+NE2   NR3  -0.51 -0.55
+HE2   H     0.44  0.36
+ND1   NR3  -0.51 -0.55
+HD1   H     0.44  0.36
+CE1   CPH2  0.32  0.32
+HE1   HR2   0.18  0.17
+C     C     0.51  0.51
+O     O    -0.51 -0.51
+TOTAL       1.00  0.75
+
+###### LYS ######
+Type  Name Q-C36 Q-prosECCo75
+NH1   N    -0.47 -0.47
+H     HN    0.31  0.31
+CT1   CA    0.07  0.07
+HB1   HA    0.09  0.09
+CT2   CB   -0.18 -0.18
+HA2   HB1   0.09  0.09
+HA2   HB2   0.09  0.09
+CT2   CG   -0.18 -0.18
+HA2   HG1   0.09  0.09
+HA2   HG2   0.09  0.09
+CT2   CD   -0.18 -0.18
+HA2   HD1   0.09  0.09
+HA2   HD2   0.09  0.09
+CT2   CE    0.21  0.1575
+HA2   HE1   0.05  0.0375
+HA2   HE2   0.05  0.0375
+NH3   NZ   -0.30 -0.225
+HC    HZ1   0.33  0.2475
+HC    HZ2   0.33  0.2475
+HC    HZ3   0.33  0.2475
+C     C     0.51  0.51
+O     O    -0.51 -0.51
+TOTAL       1.00  0.75
+
+###### C-Term ######
+Type  Name Q-C36 Q-prosECCo75
+CC    C     0.34  0.39
+OC    OT1  -0.67 -0.57
+OC    OT2  -0.67 -0.57
+TOTAL      -1.00 -0.75
+
+###### N-Term ######
+Type  Name Q-C36 Q-prosECCo75
+NH3   N    -0.30 -0.3025
+HC    H1    0.33  0.2475
+HC    H2    0.33  0.2475
+HC    H3    0.33  0.2475
+CT1   CA    0.21  0.21
+HB1   HA    0.10  0.10
+TOTAL       1.00  0.75
+
