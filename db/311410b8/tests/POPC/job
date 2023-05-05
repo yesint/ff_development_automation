@@ -4,10 +4,11 @@
 #SBATCH --time=04:00:00
 #SBATCH --mem=10G
 #---------------------------------
-# SBATCH --partition=b32_128_gpu
-# SBATCH --gres=gpu:2
+#SBATCH --partition=b32_128_gpu
+#SBATCH --gres=gpu:2
 
-#SBATCH --partition=b64_any,a36_any
+# SBATCH --partition=b64_any,a36_any
+
 #SBATCH --nodes=1
 
 # SBATCH --partition=a36_any
@@ -54,7 +55,6 @@ fi
 function resubmit {
     echo EXIT TRAPPED
     if    ls step* 1>/dev/null 2>&1 \
-       #|| grep " error" err.txt 1>/dev/null 2>&1 \
        || grep " error" md.log 1>/dev/null 2>&1
     then
        failed=1
@@ -62,7 +62,7 @@ function resubmit {
        # Report failure
        echo "md failed" > STATUS
     fi
-    if [ ! -f confout.gro ] && [ -z ${failed+x} ]; then
+    if [ ! -f after_md.gro ] && [ -z ${failed+x} ]; then
        echo Resubmitting at $(date)
        echo Resubmitting at $(date) with a=${a_loaded} b=${b_loaded} >> submit.log
        sbatch --export=ALL,a_loaded=${a_loaded},b_loaded=${b_loaded},cpi_arg="-cpi" job

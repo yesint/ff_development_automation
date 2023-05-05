@@ -56,6 +56,7 @@ function resubmit {
     echo EXIT TRAPPED
     if    ls step* 1>/dev/null 2>&1 \
        || grep " error" md.log 1>/dev/null 2>&1
+       || grep " error" err.txt 1>/dev/null 2>&1
     then
        failed=1
        echo Error occured at $(date) >> submit.log
