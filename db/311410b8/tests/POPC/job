@@ -110,6 +110,6 @@ echo "md finished" > STATUS
 # Analysis
 ############
 
-pteros_analysis.py -f topol.tpr traj_comp.xtc -b 50000 -task analysis.py
+pteros_analysis.py -f topol.tpr traj_comp.xtc -b 50ns -task analysis.py
 
 echo "analysis finished" > STATUS
