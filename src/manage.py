@@ -1,6 +1,7 @@
 #!/bin/env python3
 
 from subprocess import call, check_output
+from results_compare import TestResults
 import argparse
 from pathlib import Path
 from glob import glob
@@ -48,10 +49,10 @@ parser.add_argument('--check-all',
                     action='store_true',
                     required=False,
                     help='Check the status of all parameters')
-parser.add_argument('--check-jobs',
+parser.add_argument('--get-results',
                     action='store_true',
                     required=False,
-                    help='Check status of cluster jobs')
+                    help='Check status of cluster jobs and retrieve the results')
 parser.add_argument('--send-db',
                     action='store_true',
                     required=False,
@@ -60,6 +61,10 @@ parser.add_argument('--update-tests',
                     action='store_true',
                     required=False,
                     help='Update test rules for all db entries locally')
+parser.add_argument('--compare-results',
+                    action='store_true',
+                    required=False,
+                    help='Compare results of tests with reference')
 
 
 args = parser.parse_args()
@@ -163,10 +168,38 @@ if args.check:
                     print('No tests results')
 
 
-if args.check_jobs:
+if args.get_results:
     print(f'Sending scripts to cluster...')
     call(f'rsync -aPr -e "ssh" {Config.root_dir}/src {Config.ssh_host}:{Config.cluster_root_dir} >/dev/null', shell=True)
 
     # Run cluster side script
     print(f'Running cluster-side script...')
     call(f'ssh {Config.ssh_host} "python3 {Config.cluster_root_dir}/src/check_status_on_cluster.py"', shell=True)
+    
+    print('Getting results of finished tests...')
+    call(f'rsync -aPr -e "ssh" {Config.ssh_host}:{Config.cluster_root_dir}/db/finished_list {Config.root_dir}/tmp >/dev/null', shell=True)
+    
+    # Make list of files to download
+    with open(f'{Config.root_dir}/tmp/download_list','w') as f:
+        for line in open(f'{Config.root_dir}/tmp/finished_list'):
+            hashsum,test = line.split()
+            f.write(f'db/{hashsum}/tests/{test}/properties.dat\n')
+            print(f'\t{hashsum}:{test}')
+
+    # Perform download
+    call(f'rsync -aPr -e "ssh" --no-dirs --files-from={Config.root_dir}/tmp/download_list {Config.ssh_host}:{Config.cluster_root_dir} {Config.root_dir} > /dev/null', shell=True)
+    
+
+if args.compare_results:
+    db_dirs = glob(f'{Config.root_dir}/db/*')
+    # Cycle over tests
+    for test in glob(f'{Config.root_dir}/tests/*'):
+        test = os.path.basename(test)
+        tr = TestResults(test)
+        print(f'Test {test}:')
+        # Cycle over db entries
+        for db_dir in db_dirs:
+            db_dir = os.path.basename(db_dir)
+            print(f'{db_dir}:')
+            tr.load_result(db_dir)
+    
