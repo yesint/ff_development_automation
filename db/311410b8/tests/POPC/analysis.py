@@ -9,7 +9,7 @@ class Analysis(TaskBase):
         # Number of lipids
         self.Nlipids = self.membr('name P').size()
         # Selections for density distributions
-        self.head = self.membr('name N "C1[12345]"')
+        self.head = self.membr('name N C12 C13 C14 C5 C11 P O11 O12 O13 O14')
         self.head_masses = self.head.get_mass()
         #self.po4 = self.membr('name P "O[1234]')
         # Histograms for density
